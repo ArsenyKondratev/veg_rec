@@ -275,8 +275,8 @@ def log_to_db(image_array, predicted_sort, predicted_quality, com):
                 comment TEXT
             )
         """)
-        cursor.execute("INSERT INTO logs (timestamp, predicted_class, image_array, comment) VALUES (?, ?, ?, ?)",
-                    (datetime.datetime.now().isoformat(), predicted_sort, predicted_quality, str(image_array.tolist()), com[0]))
+        cursor.execute("INSERT INTO logs (timestamp, predicted_sort, predicted_quality, image_array, comment) VALUES (?, ?, ?, ?, ?)",
+                    (datetime.datetime.now().isoformat(), predicted_sort, predicted_quality, image_array, com))
         conn.commit()
         conn.close()
     except Exception as e:
@@ -292,9 +292,9 @@ async def predict(file: UploadFile = File(...), length: int = 0):
     return {"predicted_sort": predicted_sort, "predicted_quality": predicted_quality, "image_array":str(image_array.tolist())}
 
 @app.post("/log_comment")
-async def log_comment(com: str = '', predicted_sort: str = '', predicted_quality: str = '', image_array: list = None):
+async def log_comment(com: str = '', predicted_sort: str = '', predicted_quality: str = '', image_array: str = ''):
     log_to_db(image_array, predicted_sort, predicted_quality, com)
-    return {"predicted_sort": predicted_sort, "predicted_quality": predicted_quality, "image_array":str(image_array.tolist())}
+    return {"predicted_sort": predicted_sort, "predicted_quality": predicted_quality, "image_array":image_array}
 
 # http://192.168.0.232:8000/docs#/default/predict_predict_post
 
