@@ -188,7 +188,7 @@ def crop(image: Image.Image) -> list[np.ndarray] | None:
     return cropped_images[0]
 
 # Функция предсказания
-def predict_image(image: Image.Image, length: int = 0) -> tuple[..., ..., ...]:
+def predict_image(image: Image.Image, length: int = 0):
 
     # томат 1, огурец 0
     results = yolo(image, conf=0.5)
@@ -286,6 +286,8 @@ def log_to_db(image_array, predicted_sort, predicted_quality, com):
 @app.post("/predict")
 async def predict(file: UploadFile = File(...), length: int = 0):
     image = Image.open(io.BytesIO(await file.read()))
+    if predict_image(image, length) == "Плод не обнаружен":
+        return "Плод не обнаружен"
     image_array, predicted_sort, predicted_quality = predict_image(image, length)
     return {"predicted_sort": predicted_sort, "predicted_quality": predicted_quality, "image_array":str(image_array.tolist())}
 
