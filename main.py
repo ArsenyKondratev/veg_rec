@@ -215,7 +215,7 @@ def predict_image(image: Image.Image, length: int = 0):
         data_q = {
             "vegetable": "cucumber",
             "spots": class_names_spots[predictions_spots],
-            "Кривизна": class_names_shape[predictions_shape]
+            "shape": class_names_shape[predictions_shape]
         }
     else:
         image_array = crop(image)
