@@ -188,7 +188,7 @@ def crop(image: Image.Image) -> list[np.ndarray] | None:
     return cropped_images[0]
 
 # Функция предсказания
-def predict_image(image: Image.Image, length: int = 0):
+def predict_image(image: Image.Image, length: int = 0) -> tuple[..., ..., ...]:
 
     # томат 1, огурец 0
     results = yolo(image, conf=0.5)
