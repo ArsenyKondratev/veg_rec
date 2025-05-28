@@ -77,7 +77,7 @@ api_headers = {
     "Content-Type": "application/json"
 }
 
-app = FastAPI()
+app = FastAPI(debug=True)
 
 # Модель для пользователя
 class User(BaseModel):
